@@ -360,8 +360,8 @@
    <widget class="QPushButton" name="btn_simular">
     <property name="geometry">
      <rect>
-      <x>1080</x>
-      <y>100</y>
+      <x>1620</x>
+      <y>90</y>
       <width>231</width>
       <height>41</height>
      </rect>
@@ -383,12 +383,12 @@
      <string>dX/dt = 0.5 * X^2 - (0.2*X) + 5</string>
     </property>
    </widget>
-   <widget class="QTableWidget" name="tableWidget">
+   <widget class="QTableWidget" name="tablaSimulacion">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>150</y>
-      <width>1921</width>
+      <width>1511</width>
       <height>721</height>
      </rect>
     </property>
@@ -500,6 +500,102 @@
     <column>
      <property name="text">
       <string>Cantidad de personas atendidas</string>
+     </property>
+    </column>
+   </widget>
+   <widget class="QLabel" name="label_13">
+    <property name="geometry">
+     <rect>
+      <x>1080</x>
+      <y>100</y>
+      <width>61</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Duarcion</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="duracion">
+    <property name="geometry">
+     <rect>
+      <x>1140</x>
+      <y>100</y>
+      <width>113</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="inicio">
+    <property name="geometry">
+     <rect>
+      <x>1370</x>
+      <y>100</y>
+      <width>113</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_14">
+    <property name="geometry">
+     <rect>
+      <x>1280</x>
+      <y>100</y>
+      <width>81</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Fila de inicio</string>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="tablaRK">
+    <property name="geometry">
+     <rect>
+      <x>1515</x>
+      <y>151</y>
+      <width>411</width>
+      <height>721</height>
+     </rect>
+    </property>
+    <column>
+     <property name="text">
+      <string>xi</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>yi</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>k1</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>k2</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>k3</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>k4</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>xi+1</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>yi+1</string>
      </property>
     </column>
    </widget>
