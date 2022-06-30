@@ -201,7 +201,9 @@ def simular(filaInicio, finSimulacion, aII, bII, aLI, bLI, aFI, bFI, aLPI, bLPI,
                               "Atendidos en informes": [], "Atendidos en reservas": [],
                               "Cantidad de personas esperando": [], "cantidad de personas atendidas": []})
 
+
         # Construimos el dataframe
+
         if True:#filaInicio < nroDeFila and nroDeFila < 400 + filaInicio:
             fila.at[0, "Reloj"] = reloj
             fila.at[0, "Tipo De Evento"] = reloj
