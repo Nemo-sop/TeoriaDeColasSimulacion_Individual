@@ -31,7 +31,7 @@ from RungeKutta.RungeKutta import calcularRK
 from distribuciones import *
 import bisect
 
-def simular(pantalla, filaInicio, finSimulacion, aII, bII, aLI, bLI, aFI, bFI, aLPI, bLPI, aLRI, bLRI, aFR, bFR, aIR, bIR, aLR, bLR, aLPR, bLPR, aIA, bIA):
+def simular(pantalla, filaInicio, finSimulacion, probIrReservas, aII, bII, aLI, bLI, aFI, bFI, aLPI, bLPI, aLRI, bLRI, aFR, bFR, aIR, bIR, aLR, bLR, aLPR, bLPR, aIA, bIA):
     # Inicializamos todos los objetos permanentes y el dataframe
     filaInicio = filaInicio
 
@@ -45,13 +45,17 @@ def simular(pantalla, filaInicio, finSimulacion, aII, bII, aLI, bLI, aFI, bFI, a
                           "Cantidad de personas esperando":[], "Cantidad de personas atendidas":[]})
 
 
-    servidorInformes = Servidor("Informes", "Libre", [], 0, 0)
-    servidorReservas = Servidor("Reservas", "Libre", [], 0, 0)
+    colaInformes = []
+    colaReservas = []
+    servidorInformes = Servidor("Informes", "Libre", colaInformes, 0, 0)
+    servidorReservas = Servidor("Reservas", "Libre", colaReservas, 0, 0)
     eventos = []
     reloj = 0
-    porcentajeDeTrabajoAlarma = 0
+    tiempoDeTrabajoAlarma = 0
     nroDeFila = 0
-    RKCalculado = False
+    valorRK, dfRungeKutta = calcularRK()
+    print(valorRK)
+
 
 
     # Inizializamos las primeras llegadas
@@ -60,7 +64,8 @@ def simular(pantalla, filaInicio, finSimulacion, aII, bII, aLI, bLI, aFI, bFI, a
     primeraIngresoReservas = Evento("Ingreso para reservas", tiempo(aIR, bIR), Persona())
 
     persona = Persona()
-    primerAtque = Evento("Inicio alarma", tiempo(aIR, bIR), persona.anular())
+    persona.anular()
+    primerAtque = Evento("Inicio alarma", tiempo(aIA, bIA), persona)
 
 
     bisect.insort_right(eventos, primeraIngresoReservas)
@@ -69,10 +74,12 @@ def simular(pantalla, filaInicio, finSimulacion, aII, bII, aLI, bLI, aFI, bFI, a
 
 
     while reloj < finSimulacion:
-        print(reloj)
+
 
         eventoActual = eventos[0]
         reloj = eventoActual.get_tiempo()
+
+        print(reloj, eventoActual.get_persona())
 
         if eventoActual.get_tipoEvento() == "Ingreso para informes":
 
@@ -85,7 +92,7 @@ def simular(pantalla, filaInicio, finSimulacion, aII, bII, aLI, bLI, aFI, bFI, a
 
             if servidorInformes.get_estado() == "Libre":
                 servidorInformes.set_estado("Ocupado")
-                servidorInformes.set_siendoAtendido(eventoActual.get_persona())
+                servidorInformes.set_siendoAtendido(eventoActual.get_persona().get_documento())
                 finAtencionInforme = Evento("Fin atencion informes", tiempo(aFI, bFI) + reloj,eventoActual.get_persona())
                 bisect.insort_right(eventos, finAtencionInforme)
                 servidorInformes.add_tiempoOscioso(reloj - servidorInformes.get_seDesocupo())
@@ -95,18 +102,19 @@ def simular(pantalla, filaInicio, finSimulacion, aII, bII, aLI, bLI, aFI, bFI, a
 
         elif eventoActual.get_tipoEvento() == "Fin atencion informes":
 
-            if len(servidorInformes.get_cola()) == 0:
+            if len(colaInformes) == 0:
                 servidorInformes.set_estado("Libre")
                 servidorInformes.set_siendoAtendido("Nadie")
                 servidorInformes.set_seDesocupo(reloj)
             else:
                 finAtencionInforme = Evento("Fin atencion informes", tiempo(aFI, bFI) + reloj, servidorInformes.get_elQueSigue())
-                servidorInformes.set_siendoAtendido(servidorInformes.get_elQueSigue())
-                servidorReservas.mover_cola()
+                servidorInformes.set_siendoAtendido(servidorInformes.get_elQueSigue().get_documento())
+                servidorInformes.mover_cola()
+                #colaInformes.pop(0)
                 bisect.insort_right(eventos, finAtencionInforme)
 
             servidorInformes.agregarAtendido()
-            if random.random() < 0.6:
+            if random.random() < 1 - probIrReservas:
                 salidaPorLaPuerta = Evento("Llegada a la puerta desde informes", tiempo(aLPI, bLPI) + reloj, eventoActual.get_persona())
                 bisect.insort_right(eventos, salidaPorLaPuerta)
             else:
@@ -115,13 +123,13 @@ def simular(pantalla, filaInicio, finSimulacion, aII, bII, aLI, bLI, aFI, bFI, a
 
         elif eventoActual.get_tipoEvento() == "Llegada a la puerta desde informes":
             pass
-        elif eventoActual.get_tipoEvento() == "Llegada a la puerta desde informes":
+        elif eventoActual.get_tipoEvento() == "Llegada a la puerta desde reservas":
             pass
         elif eventoActual.get_tipoEvento() == "Llegada a reservas desde informes":
 
             if servidorReservas.get_estado() == "Libre":
                 servidorReservas.set_estado("Ocupado")
-                servidorReservas.set_siendoAtendido(eventoActual.get_persona())
+                servidorReservas.set_siendoAtendido(eventoActual.get_persona().get_documento())
                 finAtencionReservas = Evento("Fin atencion reservas", tiempo(aFR, bFR) + reloj, eventoActual.get_persona())
                 bisect.insort_right(eventos, finAtencionReservas)
                 servidorReservas.add_tiempoOscioso(reloj - servidorReservas.get_seDesocupo())
@@ -131,14 +139,15 @@ def simular(pantalla, filaInicio, finSimulacion, aII, bII, aLI, bLI, aFI, bFI, a
 
         elif eventoActual.get_tipoEvento() == "Fin atencion reservas":
 
-            if len(servidorReservas.get_cola()) == 0:
+            if len(colaReservas) == 0:
                 servidorReservas.set_estado("Libre")
                 servidorReservas.set_siendoAtendido("Nadie")
                 servidorReservas.set_seDesocupo(reloj)
             else:
                 finAtencionReservas = Evento("Fin atencion reservas", tiempo(aFR, bFR) + reloj, servidorReservas.get_elQueSigue())
-                servidorReservas.set_siendoAtendido(servidorReservas.get_elQueSigue())
+                servidorReservas.set_siendoAtendido(servidorReservas.get_elQueSigue().get_documento())
                 servidorReservas.mover_cola()
+                #colaReservas.pop(0)
                 bisect.insort_right(eventos, finAtencionReservas)
 
             salidaPorLaPuerta = Evento("Llegada a la puerta desde reservas", tiempo(aLPR, bLPR) + reloj, eventoActual.get_persona())
@@ -167,27 +176,29 @@ def simular(pantalla, filaInicio, finSimulacion, aII, bII, aLI, bLI, aFI, bFI, a
             servidorReservas.set_estado("Atacado")
             servidorInformes.set_estado("Atacado")
 
+            tiempoDeTrabajoAlarma += valorRK
+
             persona = Persona()
-
-            if not RKCalculado:
-                valor, dfRungeKutta = calcularRK()
-                RKCalculado = True
-
-            finAlarma = Evento("Fin alarma", valor + reloj, persona.anular())
+            persona.anular()
+            finAlarma = Evento("Fin alarma", valorRK + reloj, persona)
             bisect.insort_right(eventos, finAlarma)
 
             for i in eventos:
                 if i.get_tipoEvento() == "Fin atencion informes" or i.get_tipoEvento() == "Fin atencion reservas":
-                    i.add_tiempo(valor)
+                    i.add_tiempo(valorRK)
 
 
         elif eventoActual.get_tipoEvento() == "Fin alarma":
+
             persona = Persona()
-            proximoAtaque = Evento("Inicio alarma", tiempo(aIA, bIA) + reloj, persona.anular())
+            persona.anular()
+            proximoAtaque = Evento("Inicio alarma", tiempo(aIA, bIA) + reloj, persona)
             bisect.insort_right(eventos, proximoAtaque)
+            servidorReservas.set_estado(servidorReservas.get_estadoAnterior())
+            servidorInformes.set_estado(servidorInformes.get_estadoAnterior())
 
         else:
-            print("Algo hiciste mal...")
+            print("Algo hiciste mal...", eventoActual.get_tipoEvento())
 
         fila = pd.DataFrame({"Reloj": [], "Tipo De Evento": [], "Nombre": [],
                               "Tiempo Hasta La Proxima Llegada para informes": [], "Proxima Llegada informes": [],
@@ -205,27 +216,46 @@ def simular(pantalla, filaInicio, finSimulacion, aII, bII, aLI, bLI, aFI, bFI, a
 
         if True:#filaInicio < nroDeFila and nroDeFila < 400 + filaInicio:
             fila.at[0, "Reloj"] = reloj
-            fila.at[0, "Tipo De Evento"] = reloj
-            fila.at[0, "Nombre"] = reloj
-            fila.at[0, "Tiempo Hasta La Proxima Llegada para informes"] = reloj
-            fila.at[0, "Proxima Llegada informes"] = reloj
-            fila.at[0, "Tiempo Hasta La Proxima Llegada para reservas"] = reloj
-            fila.at[0, "Proxima Llegada reservas"] = reloj
-            fila.at[0, "Proximo Ataque"] = reloj
-            fila.at[0, "Duracion del Ataque"] = reloj
-            fila.at[0, "Estado Informes"] = reloj
-            fila.at[0, "Informes ocupado por"] = reloj
-            fila.at[0, "Cola Informes"] = reloj
-            fila.at[0, "Estado Reservas"] = reloj
-            fila.at[0, "Reservas ocupado por"] = reloj
-            fila.at[0, "Cola Reservas"] = reloj
-            fila.at[0, "Tiempo oscioso informes"] = reloj
-            fila.at[0, "Tiempo oscioso reservas"] = reloj
-            fila.at[0, "Porcentaje de trabajo de alarmas"] = reloj
-            fila.at[0, "Atendidos en informes"] = reloj
-            fila.at[0, "Atendidos en reservas"] = reloj
-            fila.at[0, "Cantidad de personas esperando"] = reloj
-            fila.at[0, "Cantidad de personas atendidas"] = reloj
+            fila.at[0, "Tipo De Evento"] = eventoActual.get_tipoEvento()
+            fila.at[0, "Nombre"] = eventoActual.get_persona().get_documento()
+
+            proximaLlegadaInformes = "no se calculo"
+            proximaLlegadaReservas = "no se calculo"
+            proximoAtaque = "no se calculo"
+            finAtaque = "no se calculo"
+            for i in eventos:
+                if i.get_tipoEvento() == "Ingreso para informes":
+                    proximaLlegadaInformes = i.get_tiempo()
+                if i.get_tipoEvento() == "Ingreso para reservas":
+                    proximaLlegadaReservas = i.get_tiempo()
+                if i.get_tipoEvento() == "Inicio alarma":
+                    proximoAtaque = i.get_tiempo()
+                if i.get_tipoEvento() == "Fin alarma":
+                    finAtaque = i.get_tiempo()
+
+
+            fila.at[0, "Tiempo Hasta La Proxima Llegada para informes"] = proximaLlegadaInformes - reloj
+            fila.at[0, "Proxima Llegada informes"] = proximaLlegadaInformes
+            fila.at[0, "Tiempo Hasta La Proxima Llegada para reservas"] = proximaLlegadaReservas - reloj
+            fila.at[0, "Proxima Llegada reservas"] = proximaLlegadaReservas
+            fila.at[0, "Proximo Ataque"] =proximoAtaque
+            if finAtaque == "no se calculo":
+                fila.at[0, "Duracion del Ataque"] = "n/a"
+            else:
+                fila.at[0, "Duracion del Ataque"] = valorRK
+            fila.at[0, "Estado Informes"] = servidorInformes.get_estado()
+            fila.at[0, "Informes ocupado por"] = servidorInformes.get_siendoAtendido()
+            fila.at[0, "Cola Informes"] = "Longitud: " +str(len(servidorInformes.get_cola())) +" "+ str([i.get_documento() for i in servidorInformes.get_cola()])
+            fila.at[0, "Estado Reservas"] = servidorReservas.get_estado()
+            fila.at[0, "Reservas ocupado por"] = servidorReservas.get_siendoAtendido()
+            fila.at[0, "Cola Reservas"] = "Longitud: " +str(len(servidorReservas.get_cola())) +" "+ str([i.get_documento() for i in servidorReservas.get_cola()])
+            fila.at[0, "Tiempo oscioso informes"] = servidorInformes.get_tiempoOscioso()
+            fila.at[0, "Tiempo oscioso reservas"] = servidorReservas.get_tiempoOscioso()
+            fila.at[0, "Porcentaje de trabajo de alarmas"] = tiempoDeTrabajoAlarma/reloj
+            fila.at[0, "Atendidos en informes"] = servidorInformes.get_atendidos()
+            fila.at[0, "Atendidos en reservas"] = servidorReservas.get_atendidos()
+            fila.at[0, "Cantidad de personas esperando"] = len(servidorInformes.get_cola()) + len(servidorReservas.get_cola())
+            fila.at[0, "Cantidad de personas atendidas"] = servidorReservas.get_atendidos() + servidorInformes.get_atendidos()
 
 
 
@@ -235,6 +265,7 @@ def simular(pantalla, filaInicio, finSimulacion, aII, bII, aLI, bLI, aFI, bFI, a
         nroDeFila += 1
 
     print("Llegue aca")
+
 
     pantalla.mostrarResultados(tabla, dfRungeKutta)
 

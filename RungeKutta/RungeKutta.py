@@ -37,6 +37,8 @@ def rungeKutta(fun, xi, yi):
 
         dfRungeKutta = pd.concat([dfRungeKutta, fila], ignore_index=True)
 
+        #print(dfRungeKutta)
+
     return round(xi*60, 4), dfRungeKutta
 
 # pd.set_option('display.max_rows', None)

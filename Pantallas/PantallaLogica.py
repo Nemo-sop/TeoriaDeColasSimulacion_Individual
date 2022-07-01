@@ -18,13 +18,14 @@ class Pantalla(QMainWindow):
     def metodoAuxiliar(self):
 
         if self.duracion.text() != "":
-            simular(self, int(self.inicio.text()), int(self.duracion.text()), int(self.aII.text()), int(self.bII.text()), int(self.aLI.text()),
+            simular(self, int(self.inicio.text()), int(self.duracion.text()), int(self.probIrReservas.text()), int(self.aII.text()), int(self.bII.text()), int(self.aLI.text()),
                     int(self.bLI.text()), int(self.aFI.text()), int(self.bFI.text()), int(self.aLPI.text()), int(self.bLPI.text()), int(self.aLRI.text()),
                     int(self.bLRI.text()), int(self.aFR.text()), int(self.bFR.text()), int(self.aIR.text()), int(self.bIR.text()), int(self.aLR.text()),
                     int(self.bLR.text()), int(self.aLPR.text()), int(self.bLPR.text()), int(self.aIA.text()), int(self.bIA.text()))
 
-    def mostrarResultados(self, tabla, RK):
-        print(tabla)
+
+    def mostrarResultados(self, tabla, tablaRK):
+        #print(tabla)
 
         fila = 0
         self.tablaSimulacion.setRowCount(len(tabla))
@@ -53,3 +54,17 @@ class Pantalla(QMainWindow):
             self.tablaSimulacion.setItem(fila, 21, QTableWidgetItem(str(tabla.at[i, "Cantidad de personas atendidas"])))
 
             fila += 1
+        # Cargamos la tabla del RK
+        filaRK = 0
+        self.tablaRK.setRowCount(len(tablaRK))
+        for i in range(len(tablaRK)):
+            self.tablaRK.setItem(filaRK, 0, QTableWidgetItem(str(round(tablaRK.at[i, "xi"], 4))))
+            self.tablaRK.setItem(filaRK, 1, QTableWidgetItem(str(round(tablaRK.at[i, "yi"], 4))))
+            self.tablaRK.setItem(filaRK, 2, QTableWidgetItem(str(round(tablaRK.at[i, "k1"], 4))))
+            self.tablaRK.setItem(filaRK, 3, QTableWidgetItem(str(round(tablaRK.at[i, "k2"], 4))))
+            self.tablaRK.setItem(filaRK, 4, QTableWidgetItem(str(round(tablaRK.at[i, "k3"], 4))))
+            self.tablaRK.setItem(filaRK, 5, QTableWidgetItem(str(round(tablaRK.at[i, "k4"], 4))))
+            self.tablaRK.setItem(filaRK, 6, QTableWidgetItem(str(round(tablaRK.at[i, "xi+1"], 4))))
+            self.tablaRK.setItem(filaRK, 7, QTableWidgetItem(str(round(tablaRK.at[i, "yi+1"], 4))))
+
+            filaRK += 1

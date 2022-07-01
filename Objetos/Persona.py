@@ -8,3 +8,6 @@ class Persona:
     def anular(self):
         self.__documento = 0
 
+    def get_documento(self):
+        return self.__documento
+
