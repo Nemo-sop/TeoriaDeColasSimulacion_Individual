@@ -24,7 +24,7 @@ class Pantalla(QMainWindow):
                     int(self.bLR.text()), int(self.aLPR.text()), int(self.bLPR.text()), int(self.aIA.text()), int(self.bIA.text()))
 
 
-    def mostrarResultados(self, tabla, tablaRK):
+    def mostrarResultados(self, tabla, tablaRK, estadisticos):
         #print(tabla)
 
         fila = 0
@@ -69,3 +69,11 @@ class Pantalla(QMainWindow):
             self.tablaRK.setItem(filaRK, 7, QTableWidgetItem(str(round(tablaRK.at[i, "yi+1"], 4))))
 
             filaRK += 1
+
+        self.tiempoOsciosoInformes.setText(str(estadisticos[0]))
+        self.tiempoOsciosoReservas.setText(str(estadisticos[1]))
+        self.alarmasPorcentaje.setText(str(round(estadisticos[2]*100, 4))+"%")
+        self.atendidosInformes.setText(str(estadisticos[3]))
+        self.atendidosReservas.setText(str(estadisticos[4]))
+        self.cantidadMaximaEsperando.setText(str(estadisticos[5]))
+        self.atendidosTotal.setText(str(estadisticos[6]))
