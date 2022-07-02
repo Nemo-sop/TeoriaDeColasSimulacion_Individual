@@ -625,7 +625,7 @@
      <rect>
       <x>10</x>
       <y>650</y>
-      <width>1881</width>
+      <width>1001</width>
       <height>301</height>
      </rect>
     </property>
@@ -694,6 +694,186 @@
     </property>
     <property name="text">
      <string>40</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_16">
+    <property name="geometry">
+     <rect>
+      <x>1400</x>
+      <y>840</y>
+      <width>591</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../../../Downloads/logo-utn.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_17">
+    <property name="geometry">
+     <rect>
+      <x>1030</x>
+      <y>670</y>
+      <width>281</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Tiempo Oscioso Informes</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_18">
+    <property name="geometry">
+     <rect>
+      <x>1330</x>
+      <y>670</y>
+      <width>281</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Tiempo Oscioso Reservas</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_19">
+    <property name="geometry">
+     <rect>
+      <x>1030</x>
+      <y>710</y>
+      <width>481</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Porcentaje que estuvo trabajando el personal de las alarmas</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_20">
+    <property name="geometry">
+     <rect>
+      <x>1030</x>
+      <y>740</y>
+      <width>311</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Personas Atendidas en Informes</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_21">
+    <property name="geometry">
+     <rect>
+      <x>1030</x>
+      <y>860</y>
+      <width>331</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Personas Atendidas en Reservas</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_22">
+    <property name="geometry">
+     <rect>
+      <x>1030</x>
+      <y>790</y>
+      <width>361</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Cantidad maxima de personas esperando</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_23">
+    <property name="geometry">
+     <rect>
+      <x>1030</x>
+      <y>820</y>
+      <width>331</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Cantidad de personas atendidas</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="tiempoOsciosoInformes">
+    <property name="geometry">
+     <rect>
+      <x>1190</x>
+      <y>680</y>
+      <width>113</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="tiempoOsciosoReservas">
+    <property name="geometry">
+     <rect>
+      <x>1490</x>
+      <y>680</y>
+      <width>113</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="alarmasPorcentaje">
+    <property name="geometry">
+     <rect>
+      <x>1390</x>
+      <y>710</y>
+      <width>113</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="atendidosInformes">
+    <property name="geometry">
+     <rect>
+      <x>1220</x>
+      <y>750</y>
+      <width>113</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="atendidosReservas">
+    <property name="geometry">
+     <rect>
+      <x>1220</x>
+      <y>870</y>
+      <width>113</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="atendidosTotal">
+    <property name="geometry">
+     <rect>
+      <x>1220</x>
+      <y>830</y>
+      <width>113</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_7">
+    <property name="geometry">
+     <rect>
+      <x>1270</x>
+      <y>790</y>
+      <width>113</width>
+      <height>22</height>
+     </rect>
     </property>
    </widget>
   </widget>
