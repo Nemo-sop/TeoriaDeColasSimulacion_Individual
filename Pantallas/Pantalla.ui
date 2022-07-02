@@ -469,6 +469,11 @@
     </column>
     <column>
      <property name="text">
+      <string>Extra</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
       <string>Tiempo Hasta La Proxima Llegada para informes</string>
      </property>
     </column>
