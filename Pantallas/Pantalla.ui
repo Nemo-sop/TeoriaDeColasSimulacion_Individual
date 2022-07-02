@@ -420,9 +420,9 @@
    <widget class="QPushButton" name="btn_simular">
     <property name="geometry">
      <rect>
-      <x>1680</x>
-      <y>100</y>
-      <width>211</width>
+      <x>1620</x>
+      <y>650</y>
+      <width>271</width>
       <height>41</height>
      </rect>
     </property>
@@ -673,7 +673,7 @@
    <widget class="QLabel" name="label_15">
     <property name="geometry">
      <rect>
-      <x>1030</x>
+      <x>1050</x>
       <y>100</y>
       <width>321</width>
       <height>31</height>
@@ -686,7 +686,7 @@
    <widget class="QLineEdit" name="probIrReservas">
     <property name="geometry">
      <rect>
-      <x>1350</x>
+      <x>1370</x>
       <y>110</y>
       <width>113</width>
       <height>22</height>
@@ -892,14 +892,53 @@
    <widget class="QLabel" name="label_25">
     <property name="geometry">
      <rect>
-      <x>1330</x>
-      <y>70</y>
+      <x>1530</x>
+      <y>120</y>
       <width>371</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string> se asume que la unidad de integracion equivale a un minuto</string>
+     <string>ej: coeficiente = 60, unidad de integracion equivale a un minuto</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="coeficienteRK">
+    <property name="geometry">
+     <rect>
+      <x>1700</x>
+      <y>70</y>
+      <width>113</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>60</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_26">
+    <property name="geometry">
+     <rect>
+      <x>1620</x>
+      <y>70</y>
+      <width>81</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Coeficiente</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_27">
+    <property name="geometry">
+     <rect>
+      <x>1530</x>
+      <y>100</y>
+      <width>391</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Determina a cuantos segundos equivale la unidad de integracion</string>
     </property>
    </widget>
   </widget>

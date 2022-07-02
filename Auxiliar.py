@@ -31,7 +31,7 @@ from RungeKutta.RungeKutta import calcularRK
 from distribuciones import *
 import bisect
 
-def simular(pantalla, filaInicio, finSimulacion, probIrReservas, aII, bII, aLI, bLI, aFI, bFI, aLPI, bLPI, aLRI, bLRI, aFR, bFR, aIR, bIR, aLR, bLR, aLPR, bLPR, aIA, bIA):
+def simular(pantalla, filaInicio, finSimulacion, probIrReservas, coeficienteRK, aII, bII, aLI, bLI, aFI, bFI, aLPI, bLPI, aLRI, bLRI, aFR, bFR, aIR, bIR, aLR, bLR, aLPR, bLPR, aIA, bIA):
     # Inicializamos todos los objetos permanentes y el dataframe
     filaInicio = filaInicio
 
@@ -53,7 +53,7 @@ def simular(pantalla, filaInicio, finSimulacion, probIrReservas, aII, bII, aLI, 
     reloj = 0
     tiempoDeTrabajoAlarma = 0
     nroDeFila = 0
-    valorRK, dfRungeKutta = calcularRK()
+    valorRK, dfRungeKutta = calcularRK(coeficienteRK)
     print(valorRK)
     estadisticos = [0,0,0,0,0,0,0]
     cantidadMaximaEsperando = 0
@@ -328,7 +328,7 @@ def simular(pantalla, filaInicio, finSimulacion, probIrReservas, aII, bII, aLI, 
             if finAtaque == "no se calculo":
                 fila.at[0, "Duracion del Ataque"] = "n/a"
             else:
-                fila.at[0, "Duracion del Ataque"] = valorRK
+                fila.at[0, "Duracion del Ataque"] = round(valorRK,4)
             fila.at[0, "Estado Informes"] = servidorInformes.get_estado()
             fila.at[0, "Informes ocupado por"] = servidorInformes.get_siendoAtendido()
             fila.at[0, "Cola Informes"] = "Longitud: " +str(len(servidorInformes.get_cola())) +" "+ str([i.get_documento() for i in servidorInformes.get_cola()])

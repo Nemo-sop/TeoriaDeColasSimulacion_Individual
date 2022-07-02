@@ -2,12 +2,12 @@ from random import random
 import pandas as pd
 
 
-def calcularRK():
+def calcularRK(coeficiente):
     " Ecuación diferencial: DA/dt = B * A"
     # valorBeta = distribuciones.uniforme(0, 1)
     ecDif = lambda t, X: 0.5 * X*X - (0.2*X) + 5
     valor, dfRungeKutta = rungeKutta(ecDif, 0, 0)
-    return valor, dfRungeKutta
+    return valor*coeficiente, dfRungeKutta
 
 
 def rungeKutta(fun, xi, yi):
@@ -39,7 +39,7 @@ def rungeKutta(fun, xi, yi):
 
         #print(dfRungeKutta)
 
-    return round(xi*60, 4), dfRungeKutta
+    return xi, dfRungeKutta
 
 # pd.set_option('display.max_rows', None)
 # x, df = calcularRK()
