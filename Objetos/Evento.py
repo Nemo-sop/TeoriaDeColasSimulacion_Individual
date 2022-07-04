@@ -20,3 +20,6 @@ class Evento:
 
     def add_tiempo(self, tiempoExtra):
         self.__tiempo += tiempoExtra
+
+    def set_tiempo(self, tiempo):
+        self.__tiempo = tiempo

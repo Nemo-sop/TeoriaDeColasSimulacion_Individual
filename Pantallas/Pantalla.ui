@@ -6,12 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1904</width>
-    <height>973</height>
+    <width>1906</width>
+    <height>1021</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Trabajo Practico Nro 7</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="label">
@@ -452,6 +455,18 @@
       <height>491</height>
      </rect>
     </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>100</horstretch>
+      <verstretch>50</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>100</width>
+      <height>50</height>
+     </size>
+    </property>
     <column>
      <property name="text">
       <string>Reloj</string>
@@ -474,22 +489,22 @@
     </column>
     <column>
      <property name="text">
-      <string>Tiempo Hasta La Proxima Llegada para informes</string>
+      <string>Tiempo hasta el proximo ingreso para informes</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Proxima Llegada de informes</string>
+      <string>Proximo ingreso de informes</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Tiempo Hasta La Proxima Llegada para reservas</string>
+      <string>Tiempo hasta el proximo ingreso para reservas</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Proxima Llegada reservas</string>
+      <string>Proximo ingreso de reservas</string>
      </property>
     </column>
     <column>
@@ -625,8 +640,8 @@
      <rect>
       <x>10</x>
       <y>650</y>
-      <width>1001</width>
-      <height>301</height>
+      <width>1081</width>
+      <height>341</height>
      </rect>
     </property>
     <column>
@@ -700,7 +715,7 @@
     <property name="geometry">
      <rect>
       <x>1520</x>
-      <y>840</y>
+      <y>880</y>
       <width>591</width>
       <height>111</height>
      </rect>
@@ -718,7 +733,7 @@
    <widget class="QLabel" name="label_17">
     <property name="geometry">
      <rect>
-      <x>1030</x>
+      <x>1120</x>
       <y>670</y>
       <width>281</width>
       <height>31</height>
@@ -731,7 +746,7 @@
    <widget class="QLabel" name="label_18">
     <property name="geometry">
      <rect>
-      <x>1030</x>
+      <x>1120</x>
       <y>710</y>
       <width>281</width>
       <height>31</height>
@@ -744,7 +759,7 @@
    <widget class="QLabel" name="label_19">
     <property name="geometry">
      <rect>
-      <x>1030</x>
+      <x>1120</x>
       <y>760</y>
       <width>481</width>
       <height>21</height>
@@ -757,7 +772,7 @@
    <widget class="QLabel" name="label_20">
     <property name="geometry">
      <rect>
-      <x>1030</x>
+      <x>1120</x>
       <y>790</y>
       <width>311</width>
       <height>31</height>
@@ -770,7 +785,7 @@
    <widget class="QLabel" name="label_21">
     <property name="geometry">
      <rect>
-      <x>1030</x>
+      <x>1120</x>
       <y>830</y>
       <width>311</width>
       <height>31</height>
@@ -783,8 +798,8 @@
    <widget class="QLabel" name="label_22">
     <property name="geometry">
      <rect>
-      <x>1030</x>
-      <y>870</y>
+      <x>1110</x>
+      <y>880</y>
       <width>371</width>
       <height>21</height>
      </rect>
@@ -796,8 +811,8 @@
    <widget class="QLabel" name="label_23">
     <property name="geometry">
      <rect>
-      <x>1030</x>
-      <y>900</y>
+      <x>1110</x>
+      <y>910</y>
       <width>321</width>
       <height>31</height>
      </rect>
@@ -809,7 +824,7 @@
    <widget class="QLineEdit" name="tiempoOsciosoInformes">
     <property name="geometry">
      <rect>
-      <x>1190</x>
+      <x>1280</x>
       <y>680</y>
       <width>113</width>
       <height>22</height>
@@ -819,7 +834,7 @@
    <widget class="QLineEdit" name="tiempoOsciosoReservas">
     <property name="geometry">
      <rect>
-      <x>1190</x>
+      <x>1280</x>
       <y>720</y>
       <width>113</width>
       <height>22</height>
@@ -829,7 +844,7 @@
    <widget class="QLineEdit" name="alarmasPorcentaje">
     <property name="geometry">
      <rect>
-      <x>1390</x>
+      <x>1480</x>
       <y>760</y>
       <width>113</width>
       <height>22</height>
@@ -839,7 +854,7 @@
    <widget class="QLineEdit" name="atendidosInformes">
     <property name="geometry">
      <rect>
-      <x>1220</x>
+      <x>1310</x>
       <y>800</y>
       <width>113</width>
       <height>22</height>
@@ -849,7 +864,7 @@
    <widget class="QLineEdit" name="atendidosReservas">
     <property name="geometry">
      <rect>
-      <x>1220</x>
+      <x>1310</x>
       <y>840</y>
       <width>113</width>
       <height>22</height>
@@ -859,8 +874,8 @@
    <widget class="QLineEdit" name="atendidosTotal">
     <property name="geometry">
      <rect>
-      <x>1220</x>
-      <y>910</y>
+      <x>1300</x>
+      <y>920</y>
       <width>113</width>
       <height>22</height>
      </rect>
@@ -869,8 +884,8 @@
    <widget class="QLineEdit" name="cantidadMaximaEsperando">
     <property name="geometry">
      <rect>
-      <x>1270</x>
-      <y>870</y>
+      <x>1350</x>
+      <y>880</y>
       <width>113</width>
       <height>22</height>
      </rect>

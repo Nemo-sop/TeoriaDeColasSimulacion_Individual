@@ -20,6 +20,7 @@ eventos:
 def simular(0, 2000, 480, 720, 3, 7, 240, 840, 15, 25, 5, 15, 300, 540, 720, 1000, 12, 18, 15, 25):
 """
 import sys
+import time
 
 import pandas as pd
 from PyQt5.QtWidgets import QApplication
@@ -32,6 +33,7 @@ from distribuciones import *
 import bisect
 
 def simular(pantalla, filaInicio, finSimulacion, probIrReservas, coeficienteRK, aII, bII, aLI, bLI, aFI, bFI, aLPI, bLPI, aLRI, bLRI, aFR, bFR, aIR, bIR, aLR, bLR, aLPR, bLPR, aIA, bIA):
+    start = time.time()
     # Inicializamos todos los objetos permanentes y el dataframe
     filaInicio = filaInicio
 
@@ -58,6 +60,7 @@ def simular(pantalla, filaInicio, finSimulacion, probIrReservas, coeficienteRK, 
     estadisticos = [0,0,0,0,0,0,0]
     cantidadMaximaEsperando = 0
     laUltima = False
+    cantidadAlarmas = 0
 
 
 
@@ -77,6 +80,8 @@ def simular(pantalla, filaInicio, finSimulacion, probIrReservas, coeficienteRK, 
 
 
     while reloj < finSimulacion:
+        # if nroDeFila%100 == 0:
+        #     print(reloj)
 
 
         eventoActual = eventos[0]
@@ -84,7 +89,7 @@ def simular(pantalla, filaInicio, finSimulacion, probIrReservas, coeficienteRK, 
         if reloj > finSimulacion:
             laUltima = True
 
-        print(reloj, eventoActual.get_persona())
+        # print(reloj, eventoActual.get_persona())
 
         if eventoActual.get_tipoEvento() == "Ingreso para informes":
 
@@ -182,6 +187,8 @@ def simular(pantalla, filaInicio, finSimulacion, probIrReservas, coeficienteRK, 
 
         elif eventoActual.get_tipoEvento() == "Inicio alarma":
 
+            cantidadAlarmas += 1
+
             servidorReservas.set_estado("Atacado")
             servidorInformes.set_estado("Atacado")
 
@@ -192,10 +199,33 @@ def simular(pantalla, filaInicio, finSimulacion, probIrReservas, coeficienteRK, 
             finAlarma = Evento("Fin alarma", valorRK + reloj, persona)
             bisect.insort_right(eventos, finAlarma)
 
-            for i in eventos:
-                if i.get_tipoEvento() == "Fin atencion informes" or i.get_tipoEvento() == "Fin atencion reservas":
-                    i.add_tiempo(valorRK)
+            eventosSinModificar = []
+            eventosModificados = []
 
+            for i in eventos:
+                if i.get_tipoEvento() == "Fin atencion informes":
+                    eventosSinModificar.append(i.get_tipoEvento() +" "+ str(i.get_tiempo()))
+                    i.set_tiempo(i.get_tiempo()+valorRK)
+                    eventosModificados.append(i)
+                    eventos.remove(i)
+                    bisect.insort_right(eventos, i)
+                    break
+
+            for i in eventos:
+                if i.get_tipoEvento() == "Fin atencion reservas":
+                    eventosSinModificar.append(i.get_tipoEvento() + " " + str(i.get_tiempo()))
+                    i.set_tiempo(i.get_tiempo()+valorRK)
+                    eventosModificados.append(i)
+                    eventos.remove(i)
+                    bisect.insort_right(eventos, i)
+                    break
+
+            for k in eventos:
+                if k.get_tiempo()<finAlarma.get_tiempo() and "Fin" in k.get_tipoEvento() :
+                    print("se mamo")
+            #
+            # for j in eventosModificados:
+            #     bisect.insort_right(eventos, j)
 
         elif eventoActual.get_tipoEvento() == "Fin alarma":
 
@@ -223,21 +253,23 @@ def simular(pantalla, filaInicio, finSimulacion, probIrReservas, coeficienteRK, 
 
 
 
-        fila = pd.DataFrame({"Reloj": [], "Tipo De Evento": [], "Nombre": [], "Extra": [],
-                              "Tiempo Hasta La Proxima Llegada para informes": [], "Proxima Llegada informes": [],
-                              "Tiempo Hasta La Proxima Llegada para reservas": [], "Proxima Llegada reservas": [],
-                              "Proximo Ataque": [], "Duracion del Ataque": [],
-                              "Estado Informes": [], "Informes ocupado por": [], "Cola Informes": [],
-                              "Estado Reservas": [], "Reservas ocupado por": [], "Cola Reservas": [],
-                              "Tiempo oscioso informes": [], "Tiempo oscioso reservas": [],
-                              "Porcentaje de trabajo de alarmas": [],
-                              "Atendidos en informes": [], "Atendidos en reservas": [],
-                              "Cantidad de personas esperando": [], "Cantidad de personas atendidas": []})
+
 
 
         # Construimos el dataframe
 
-        if (filaInicio < nroDeFila and nroDeFila < 401 + filaInicio) or laUltima:  #True:
+        if (filaInicio < nroDeFila and nroDeFila < 401 + filaInicio) or laUltima:  # True: #
+
+            fila = pd.DataFrame({"Reloj": [], "Tipo De Evento": [], "Nombre": [], "Extra": [],
+                                 "Tiempo Hasta La Proxima Llegada para informes": [], "Proxima Llegada informes": [],
+                                 "Tiempo Hasta La Proxima Llegada para reservas": [], "Proxima Llegada reservas": [],
+                                 "Proximo Ataque": [], "Duracion del Ataque": [],
+                                 "Estado Informes": [], "Informes ocupado por": [], "Cola Informes": [],
+                                 "Estado Reservas": [], "Reservas ocupado por": [], "Cola Reservas": [],
+                                 "Tiempo oscioso informes": [], "Tiempo oscioso reservas": [],
+                                 "Porcentaje de trabajo de alarmas": [],
+                                 "Atendidos en informes": [], "Atendidos en reservas": [],
+                                 "Cantidad de personas esperando": [], "Cantidad de personas atendidas": []})
 
             # Agergamos un extra que nos dice cuanto falta para el evento siguiente relacionado
             extra = " algo raro paso "
@@ -248,49 +280,62 @@ def simular(pantalla, filaInicio, finSimulacion, probIrReservas, coeficienteRK, 
                     if i.get_tipoEvento() == "Llegada a informes" and i.get_persona().get_documento() == eventoActual.get_persona().get_documento():
                         demoraCaminar = i.get_tiempo() - reloj
 
-                extra = f"Tiempo en llegar a informes {demoraCaminar}"
+                extra = f"Tiempo en llegar a informes: {demoraCaminar} segundos"
 
             elif eventoActual.get_tipoEvento() == "Ingreso para reservas":
                 for i in eventos:
                     if i.get_tipoEvento() == "Llegada a reservas" and i.get_persona().get_documento() == eventoActual.get_persona().get_documento():
                         demoraCaminar = i.get_tiempo() - reloj
 
-                extra = f"Tiempo en llegar a reservas {demoraCaminar}"
+                extra = f"Tiempo en llegar a reservas: {demoraCaminar} segundos"
 
             elif eventoActual.get_tipoEvento() == "Llegada a informes":
                 extra = "Se va a la cola"
                 for i in eventos:
                     if i.get_tipoEvento() == "Fin atencion informes" and i.get_persona().get_documento() == eventoActual.get_persona().get_documento():
-                        extra = f"La atencion dura {i.get_tiempo() - reloj}"
+                        extra = f"La atencion dura {i.get_tiempo() - reloj} segundos"
 
             elif eventoActual.get_tipoEvento() == "Llegada a reservas" or eventoActual.get_tipoEvento() == "Llegada a reservas desde informes":
                 extra = "Se va a la cola"
                 for i in eventos:
                     if i.get_tipoEvento() == "Fin atencion reservas" and i.get_persona().get_documento() == eventoActual.get_persona().get_documento():
-                        extra = f"La atencion dura {i.get_tiempo() - reloj}"
+                        extra = f"La atencion dura {i.get_tiempo() - reloj} segundos"
 
             elif eventoActual.get_tipoEvento() == "Fin atencion informes":
                 if vaAReservas:
                     for i in range(len(eventos)):
-                        print(demoraCaminar)
-                        if eventos[i].get_tipoEvento() == "Llegada a reservas desde informes" and eventos[
-                            i].get_persona().get_documento() == eventoActual.get_persona().get_documento():
+                        if eventos[i].get_tipoEvento() == "Llegada a reservas desde informes" and eventos[i].get_persona().get_documento() == eventoActual.get_persona().get_documento():
                             demoraCaminar = eventos[i].get_tiempo() - reloj
 
-                    extra = f"Tiempo en llegar a reservas desde informes {demoraCaminar}"
+                    extra = f"Tiempo en llegar a reservas desde informes: {demoraCaminar} segundos"
+
+
                 else:
                     for i in eventos:
                         if i.get_tipoEvento() == "Llegada a la puerta desde informes" and i.get_persona().get_documento() == eventoActual.get_persona().get_documento():
                             demoraCaminar = i.get_tiempo() - reloj
 
-                    extra = f"Tiempo en llegar a la puerta desde informes {demoraCaminar}"
+                    extra = f"Tiempo en llegar a la puerta desde informes: {demoraCaminar} segundos"
+
+                if servidorInformes.get_estado() == "Ocupado":
+                    siendoAtendido = servidorInformes.get_siendoAtendido()
+                    for j in eventos:
+                        if j.get_tipoEvento() == "Fin atencion informes" and j.get_persona().get_documento() == siendoAtendido:
+                            extra += f"\nLa atencion del nuevo cliente dura: {j.get_tiempo() - reloj} segundos"
+
 
             elif eventoActual.get_tipoEvento() == "Fin atencion reservas":
                 for i in eventos:
                     if i.get_tipoEvento() == "Llegada a la puerta desde reservas" and i.get_persona().get_documento() == eventoActual.get_persona().get_documento():
                         demoraCaminar = i.get_tiempo() - reloj
 
-                extra = f"Tiempo en llegar a la puerta desde reservas {demoraCaminar}"
+                extra = f"Tiempo en llegar a la puerta desde reservas: {demoraCaminar} segundos"
+
+                if servidorReservas.get_estado() == "Ocupado":
+                    siendoAtendido = servidorReservas.get_siendoAtendido()
+                    for j in eventos:
+                        if j.get_tipoEvento() == "Fin atencion reservas" and j.get_persona().get_documento() == siendoAtendido:
+                            extra += f"\nLa atencion del nuevo cliente dura: {j.get_tiempo() - reloj} segundos"
 
             elif eventoActual.get_tipoEvento() == "Fin atencion reservas":
                 extra = f"La alarma de apagara en {valorRK} segundos"
@@ -354,7 +399,7 @@ def simular(pantalla, filaInicio, finSimulacion, probIrReservas, coeficienteRK, 
         tabla = pd.concat([tabla, fila], ignore_index=True)
         nroDeFila += 1
 
-    print("Llegue aca")
+    print(f"Duracion del programa: {time.time() - start}, Camtidad de alarmas: {cantidadAlarmas}")
 
 
     pantalla.mostrarResultados(tabla, dfRungeKutta, estadisticos)

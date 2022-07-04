@@ -15,10 +15,12 @@ class Pantalla(QMainWindow):
 
         self.btn_simular.clicked.connect(self.metodoAuxiliar)
 
+        self.tablaSimulacion.resizeRowsToContents();
+
     def metodoAuxiliar(self):
 
         if self.duracion.text() != "":
-            simular(self, int(self.inicio.text()), int(self.duracion.text()), int(self.probIrReservas.text()), int(self.coeficienteRK.text()),
+            simular(self, int(self.inicio.text())-1, int(self.duracion.text()), int(self.probIrReservas.text()), int(self.coeficienteRK.text()),
                     int(self.aII.text()), int(self.bII.text()), int(self.aLI.text()),
                     int(self.bLI.text()), int(self.aFI.text()), int(self.bFI.text()), int(self.aLPI.text()), int(self.bLPI.text()), int(self.aLRI.text()),
                     int(self.bLRI.text()), int(self.aFR.text()), int(self.bFR.text()), int(self.aIR.text()), int(self.bIR.text()), int(self.aLR.text()),
