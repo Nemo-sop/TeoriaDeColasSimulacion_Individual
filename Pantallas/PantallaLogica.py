@@ -1,5 +1,5 @@
 from PyQt5 import uic
-from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem
+from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QMessageBox
 
 from Auxiliar import simular
 
@@ -19,12 +19,53 @@ class Pantalla(QMainWindow):
 
     def metodoAuxiliar(self):
 
-        if self.duracion.text() != "":
+        if self.validar():
             simular(self, int(self.inicio.text())-1, int(self.duracion.text()), int(self.probIrReservas.text()), int(self.coeficienteRK.text()),
                     int(self.aII.text()), int(self.bII.text()), int(self.aLI.text()),
                     int(self.bLI.text()), int(self.aFI.text()), int(self.bFI.text()), int(self.aLPI.text()), int(self.bLPI.text()), int(self.aLRI.text()),
                     int(self.bLRI.text()), int(self.aFR.text()), int(self.bFR.text()), int(self.aIR.text()), int(self.bIR.text()), int(self.aLR.text()),
                     int(self.bLR.text()), int(self.aLPR.text()), int(self.bLPR.text()), int(self.aIA.text()), int(self.bIA.text()))
+        else:
+            QMessageBox.warning(self, "Alerta", "algun valor no es entero positivo.")
+
+    def validar(self):
+        """la funcion nos dice si un numero es natural o 0 y en ese caso devuelve True"""
+
+        campos = [self.inicio.text(),
+        self.duracion.text(),
+        self.probIrReservas.text(),
+        self.coeficienteRK.text(),
+        self.aII.text(),
+        self.bII.text(),
+        self.aLI.text(),
+        self.bLI.text(),
+        self.aFI.text(),
+        self.bFI.text(),
+        self.aLPI.text(),
+        self.bLPI.text(),
+        self.aLRI.text(),
+        self.bLRI.text(),
+        self.aFR.text(),
+        self.bFR.text(),
+        self.aIR.text(),
+        self.bIR.text(),
+        self.aLR.text(),
+        self.bLR.text(),
+        self.aLPR.text(),
+        self.bLPR.text(),
+        self.aIA.text(),
+        self.bIA.text()]
+        cont = 0
+
+        for numero in campos:
+            if str(numero).isnumeric():
+                cont += 1
+
+        if cont == 24:
+            return True
+        else:
+            return False
+
 
 
     def mostrarResultados(self, tabla, tablaRK, estadisticos):

@@ -9,3 +9,4 @@ if __name__ == "__main__":
     GUI = Pantalla()
     GUI.show()
     sys.exit(app.exec_())
+
