@@ -124,7 +124,7 @@ def simular(pantalla, filaInicio, finSimulacion, probIrReservas, coeficienteRK, 
                 bisect.insort_right(eventos, finAtencionInforme)
 
             servidorInformes.agregarAtendido()
-            if random.random() < 1 - probIrReservas:
+            if random.random() < 1 - probIrReservas/100:
                 vaAReservas = False
                 salidaPorLaPuerta = Evento("Llegada a la puerta desde informes", tiempo(aLPI, bLPI) + reloj, eventoActual.get_persona())
                 bisect.insort_right(eventos, salidaPorLaPuerta)
@@ -388,7 +388,7 @@ def simular(pantalla, filaInicio, finSimulacion, probIrReservas, coeficienteRK, 
             fila.at[0, "Cantidad de personas esperando"] = len(servidorInformes.get_cola()) + len(servidorReservas.get_cola())
             fila.at[0, "Cantidad de personas atendidas"] = servidorReservas.get_atendidos() + servidorInformes.get_atendidos()
 
-
+            tabla = pd.concat([tabla, fila], ignore_index=True)
 
 
         estadisticos = [servidorInformes.get_tiempoOscioso(), servidorReservas.get_tiempoOscioso(),
@@ -396,7 +396,7 @@ def simular(pantalla, filaInicio, finSimulacion, probIrReservas, coeficienteRK, 
                         cantidadMaximaEsperando, (servidorInformes.get_atendidos()+ servidorReservas.get_atendidos())]
 
         eventos.remove(eventoActual)
-        tabla = pd.concat([tabla, fila], ignore_index=True)
+
         nroDeFila += 1
 
     print(f"Duracion del programa: {time.time() - start}, Camtidad de alarmas: {cantidadAlarmas}")
